@@ -14,3 +14,31 @@ In parallel I took the [Rust track](https://exercism.org/tracks/rust) with
 4. https://rust-unofficial.github.io/patterns/
 5. https://cheats.rs/
 6. https://rustwasm.github.io/docs/book/
+
+## GOTCHAs
+```bash
+$ cargo install cargo-edit
+(...)
+
+error: failed to run custom build command for `log v0.4.14`
+
+Caused by:
+  could not execute process
+  `/tmp/cargo-installbVf8st/release/build/log-78c41bf7c7acfe0a/build-script-build`
+  (never executed)
+
+  Caused by:
+    Permission denied (os error 13)
+    warning: build failed, waiting for other jobs to finish...
+```
+
+caused by `noexec`:
+```bash
+$ cat /etc/fstab | grep noexec
+tmpfs   /tmp    tmpfs   defaults,noexec,nosuid 0 0
+```
+
+solution (https://github.com/rust-lang/cargo/issues/4350#issuecomment-340215811):
+```bash
+$ TMPDIR=$XDG_RUNTIME_DIR cargo install cargo-edit
+```
